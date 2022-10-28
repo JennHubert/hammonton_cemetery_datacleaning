@@ -1,2 +1,2 @@
-# hammonton_cemetary_datacleaning
+# hammonton_cemetery_datacleaning
 Halloween Coding Assignment
