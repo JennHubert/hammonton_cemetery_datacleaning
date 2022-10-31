@@ -53,13 +53,16 @@ newdf2 = pd.concat([newdf, df1])
 newdf2 = newdf2.dropna()
 newdf2['Sex'] = newdf2['Sex'].replace([' m', ' f', 'm', 'f', 'F', 'M', 'male', 'female'], ['Male', 'Female', 'Male', 'Female', 'Female', 'Male', 'Male', 'Female'])
 print(newdf2["Sex"])
-
-
+'''
+Below I am converting the dates to datetime formats.
+'''
 newdf2['DOD'] = pd.to_datetime(newdf2['DOD'], infer_datetime_format=True)
 #print(newdf2["DOD"])
 newdf2['DOB'] = pd.to_datetime(newdf2['DOB'], infer_datetime_format=True)
 #print(newdf2["DOB"])
-
+'''
+I am finding life spans below.
+'''
 newdf2['DifferenceinDays'] = (newdf2['DOD'] - newdf2['DOB']).dt.days
 newdf2['LifeSpan'] = (newdf2['DifferenceinDays'] / 365)
 newdf2['LifeSpan']=newdf2["LifeSpan"].round()
@@ -72,7 +75,6 @@ q3, q1 = np.percentile(newdf2['LifeSpan'], [75 ,25])
 iqr = q3 - q1
 print(iqr)
 
-newdf2.drop(newdf2[newdf2['LifeSpan'] < 0 ].index, inplace=True)
     
 #plt.boxplot(newdf2['LifeSpan'])
 #plt.show()
@@ -80,8 +82,16 @@ newdf2.drop(newdf2[newdf2['LifeSpan'] < 0 ].index, inplace=True)
 The above boxplot shows that there are some people with negative life spans. I will delete their rows below as outliers.
 '''
 newdf2.drop(newdf2[newdf2['LifeSpan'] < 0 ].index, inplace=True)
+
+'''
+The below boxplot confirms I got rid of the records I wanted to.
+'''
 #plt.boxplot(newdf2['LifeSpan'])
 #plt.show()
+
+
+'''
+I found the mean and median of life span regardless of Sex below
 
 median=newdf2['LifeSpan'].median()
 print("The median age is: ")
@@ -91,11 +101,9 @@ mean=newdf2['LifeSpan'].mean()
 mean=mean.round(0)
 print("The mean age is: ")
 print(mean)
-#newdf2.groupby(['DOB'])
-#print(newdf2)
 
-#I did my best to follow along the lecture and do my own research but I couldn't get the pivot table to work.
-#Below is one of my many attempts.
+I had to convert the datetime again in order to use if for the plot
+'''
 newdf2['DOB1'] = newdf2['DOB'].dt.strftime('%Y')
 print(newdf2['DOB1'])
 
@@ -109,4 +117,3 @@ print(mean_price_by_Sex)
 
 ax = mean_price_by_Sex.T.plot(kind='bar', ylabel='LifeSpan')
 plt.show()
-#newdf2.to_csv(r'/Users/jenniferhubert/file.csv')
